@@ -27,15 +27,22 @@ public class OrderController {
 
     @PostMapping
     public RestaurantOrder createOrder(@RequestBody RestaurantOrder order) {
-        if (order.getItems() != null && !order.getItems().isEmpty()) {
 
+        if (order.getItems() != null && !order.getItems().isEmpty()) {
             List<Long> itemIds = order.getItems().stream()
                     .map(MenuItem::getId)
                     .toList();
 
             List<MenuItem> fullItems = menuItemRepository.findAllById(itemIds);
 
+            Double calculatedTotal = fullItems.stream()
+                    .mapToDouble(item -> item.getPrice() != null ? item.getPrice() : 0.0)
+                    .sum();
+
             order.setItems(fullItems);
+            order.setTotalPrice(calculatedTotal);
+        } else {
+            order.setTotalPrice(0.0);
         }
 
         return orderRepository.save(order);

@@ -11,6 +11,7 @@ public class RestaurantOrder {
 
     private String status;
     private Long restaurantId;
+    private Double totalPrice;
 
     @ManyToMany
     @JoinTable(
@@ -26,6 +27,8 @@ public class RestaurantOrder {
     public void setStatus(String status) { this.status = status; }
     public Long getRestaurantId() { return restaurantId; }
     public void setRestaurantId(Long restaurantId) { this.restaurantId = restaurantId; }
+    public Double getTotalPrice() { return totalPrice; }
+    public void setTotalPrice(Double totalPrice) { this.totalPrice = totalPrice; }
 
     public List<MenuItem> getItems() { return items; }
     public void setItems(List<MenuItem> items) { this.items = items; }
