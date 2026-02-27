@@ -1,7 +1,8 @@
-﻿package com.example.restaurant.controller;
+package com.example.restaurant.controller;
 
 import com.example.restaurant.model.Restaurant;
 import com.example.restaurant.repository.RestaurantRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,15 +17,30 @@ public class RestaurantController {
         this.repository = repository;
     }
 
-    // Получить все рестораны
     @GetMapping
     public List<Restaurant> getAllRestaurants() {
         return repository.findAll();
     }
 
-    // Добавить новый ресторан
     @PostMapping
     public Restaurant createRestaurant(@RequestBody Restaurant restaurant) {
         return repository.save(restaurant);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRestaurant(@PathVariable Long id) {
+        repository.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Restaurant> updateRestaurant(@PathVariable Long id, @RequestBody Restaurant updatedRestaurant) {
+        return repository.findById(id)
+                .map(restaurant -> {
+                    restaurant.setName(updatedRestaurant.getName());
+                    restaurant.setAddress(updatedRestaurant.getAddress());
+                    Restaurant savedRestaurant = repository.save(restaurant);
+                    return ResponseEntity.ok(savedRestaurant); // Возвращает статус 200 OK
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Возвращает статус 404 Not Found
     }
 }
