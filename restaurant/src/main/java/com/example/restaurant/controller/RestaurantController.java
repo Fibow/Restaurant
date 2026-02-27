@@ -27,6 +27,18 @@ public class RestaurantController {
         return repository.save(restaurant);
     }
 
+    @PostMapping("/by-params")
+    public Restaurant createRestaurantWithParams(
+            @RequestParam String name,
+            @RequestParam String address) {
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setName(name);
+        restaurant.setAddress(address);
+
+        return repository.save(restaurant);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteRestaurant(@PathVariable Long id) {
         repository.deleteById(id);
