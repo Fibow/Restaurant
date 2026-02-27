@@ -56,8 +56,9 @@ POST http://localhost:8080/api/menu-items
   "name": "Пицца Маргарита",
   "price": 3500.0
 }
-
+```
 Создать новый заказ:
+```json
 POST http://localhost:8080/api/orders
 {
   "status": "NEW",
@@ -67,3 +68,4 @@ POST http://localhost:8080/api/orders
     { "id": 2 }
   ]
 }
+```
