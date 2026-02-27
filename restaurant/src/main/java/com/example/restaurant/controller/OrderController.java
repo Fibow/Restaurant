@@ -5,11 +5,14 @@ import com.example.restaurant.model.RestaurantOrder;
 import com.example.restaurant.repository.MenuItemRepository;
 import com.example.restaurant.repository.OrderRepository;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
+@Tag(name = "Заказы", description = "Управление заказами ресторана и расчет стоимости")
 public class OrderController {
 
     private final OrderRepository orderRepository;
@@ -21,11 +24,16 @@ public class OrderController {
     }
 
     @GetMapping
+    @Operation(summary = "Получить список всех заказов")
     public List<RestaurantOrder> getAllOrders() {
         return orderRepository.findAll();
     }
 
     @PostMapping
+    @Operation(
+            summary = "Оформить новый заказ",
+            description = "Принимает список ID блюд и автоматически рассчитывает итоговую сумму заказа"
+    )
     public RestaurantOrder createOrder(@RequestBody RestaurantOrder order) {
 
         if (order.getItems() != null && !order.getItems().isEmpty()) {

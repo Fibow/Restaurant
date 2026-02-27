@@ -1,13 +1,21 @@
 package com.example.restaurant.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Название блюда не может быть пустым")
     private String name;
+
+    @NotNull(message = "Цена должна быть указана")
+    @Positive(message = "Цена должна быть больше нуля")
     private Double price;
 
     public Long getId() { return id; }
