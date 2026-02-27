@@ -3,6 +3,7 @@ package com.example.restaurant.controller;
 import com.example.restaurant.model.MenuItem;
 import com.example.restaurant.repository.MenuItemRepository;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +25,20 @@ public class MenuItemController {
     @Operation(summary = "Получить список всех блюд")
     public List<MenuItem> getAllMenuItems() {
         return repository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Получить блюдо по ID")
+    public ResponseEntity<MenuItem> getMenuItemById(@PathVariable Long id) {
+        return repository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Удалить блюдо из меню")
+    public void deleteMenuItem(@PathVariable Long id) {
+        repository.deleteById(id);
     }
 
     @PostMapping
