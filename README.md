@@ -30,7 +30,6 @@ RESTful API, созданное на базе Spring Boot, для управле
 **Вариант 2: Локально на компьютере**
 1. Склонируйте этот репозиторий на свой компьютер.
 2. Откройте проект в IntelliJ IDEA (или любой другой Java IDE).
-3. Убедитесь, что в файле `application.properties` прописана строка подключения к базе данных PostgreSQL.
 4. Запустите приложение через главный класс (`RestaurantApplication`).
 5. Сервер запустится на порту `8080`, локальный Swagger будет доступен по адресу `http://localhost:8080/swagger-ui/index.html`.
 
@@ -87,3 +86,4 @@ POST [https://restaurant-api-bex.azurewebsites.net/api/orders](https://restauran
   "name": "Пицца Маргарита",
   "price": 3500.0
 }
+
