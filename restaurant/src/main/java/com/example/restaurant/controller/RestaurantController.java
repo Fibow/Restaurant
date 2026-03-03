@@ -60,8 +60,8 @@ public class RestaurantController {
                     restaurant.setName(updatedRestaurant.getName());
                     restaurant.setAddress(updatedRestaurant.getAddress());
                     Restaurant savedRestaurant = repository.save(restaurant);
-                    return ResponseEntity.ok(savedRestaurant); // Возвращает статус 200 OK
+                    return ResponseEntity.ok(savedRestaurant);
                 })
-                .orElseGet(() -> ResponseEntity.notFound().build()); // Возвращает статус 404 Not Found
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

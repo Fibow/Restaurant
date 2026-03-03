@@ -77,7 +77,7 @@ public class OrderController {
 
                     return ResponseEntity.ok(orderRepository.save(existingOrder));
                 })
-                .orElse(ResponseEntity.notFound().build()); // Если заказ с таким ID не найден, вернем ошибку 404
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
