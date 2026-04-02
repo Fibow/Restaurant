@@ -13,19 +13,23 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception { // [cite: 70-72]
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/css/**").permitAll()
+                        // Доступ к админке только для роли ADMIN
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // Доступ к статике и общим страницам
+                        .requestMatchers("/css/**", "/js/**", "/register", "/login").permitAll()
 
-                        .requestMatchers("/api/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/register", "/login", "/css/**").permitAll()
 
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .permitAll()
                         .defaultSuccessUrl("/home", true)
                 )
                 .logout(logout -> logout

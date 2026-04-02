@@ -15,7 +15,6 @@ public class HomeController {
 
     @GetMapping("/profile")
     public String profile(Model model, Authentication auth) {
-        // Берем имя пользователя из сессии и кладем его в переменную "username"
         model.addAttribute("username", auth.getName());
         return "profile";
     }

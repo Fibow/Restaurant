@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Главная</title>
@@ -9,5 +10,29 @@
 
 <a href="/profile">Мой профиль</a>
 <br><br>
-<a href="/logout">Выйти</a> </body>
-</html>
+<style>
+    .btn-admin {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #dc3545;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .btn-admin:hover {
+        background-color: #a71d2a;
+    }
+</style>
+<div sec:authorize="hasRole('ADMIN')" style="margin-top: 20px;">
+    <a th:href="@{/admin/users}" class="btn-admin">
+        Админ-панель
+    </a>
+</div>
+
+<div sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Выйти</button>
+    </form>
+</div>

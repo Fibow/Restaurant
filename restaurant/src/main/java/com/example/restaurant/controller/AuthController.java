@@ -1,6 +1,6 @@
 package com.example.restaurant.controller;
 
-import com.example.restaurant.model.User;
+import com.example.restaurant.entity.User;
 import com.example.restaurant.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;

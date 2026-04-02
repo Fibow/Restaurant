@@ -1,6 +1,6 @@
 package com.example.restaurant.security;
 
-import com.example.restaurant.model.User;
+import com.example.restaurant.entity.User;
 import com.example.restaurant.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
