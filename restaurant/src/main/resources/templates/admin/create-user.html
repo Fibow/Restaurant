@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Создать пользователя</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
+    input, select { padding: 8px; width: 300px; }
+    .btn { padding: 10px 15px; background: #28a745; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<h2>Добавление нового пользователя</h2>
+
+<form th:action="@{/admin/create}" th:object="${user}" method="post">
+  <div class="form-group">
+    <label>Имя пользователя:</label>
+    <input type="email" th:field="*{username}" required />
+  </div>
+
+  <div class="form-group">
+    <label>Пароль:</label>
+    <input type="password" th:field="*{password}" required />
+  </div>
+
+  <div class="form-group">
+    <label>Роль:</label>
+    <select th:field="*{role}">
+      <option value="USER">Пользователь</option>
+      <option value="ADMIN">Администратор</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn">Сохранить</button>
+  <a th:href="@{/admin/users}">Назад к списку</a>
+</form>
+
+</body>
+</html>
