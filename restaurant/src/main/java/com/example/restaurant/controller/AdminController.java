@@ -55,13 +55,18 @@ public class AdminController {
             return "admin/create-user";
         }
 
-        try {
-            String rawPassword = user.getPassword();
-            user.setPassword(passwordEncoder.encode(rawPassword));
+        String rawPassword = user.getPassword();
 
+        try {
             userService.register(user);
 
-            emailService.sendEmail(user.getEmail(), "Регистрация", "Логин: " + user.getUsername());
+            String subject = "Успешная регистрация";
+            String message = "Здравствуйте, " + user.getUsername() + "!\n\n" +
+                    "Ваш аккаунт в системе ресторана создан.\n" +
+                    "Логин: " + user.getUsername() + "\n" +
+                    "Пароль: " + rawPassword;
+
+            emailService.sendEmail(user.getEmail(), subject, message);
 
             return "redirect:/admin/users";
 
