@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -46,25 +47,28 @@ public class AdminController {
     }
 
     @PostMapping("/create")
-    public String createUser(@Valid User user) {
-        String rawPassword = user.getPassword();
-        user.setPassword(passwordEncoder.encode(rawPassword));
+    public String createUser(@Valid @ModelAttribute("user") User user,
+                             BindingResult bindingResult,
+                             Model model) {
 
-        userRepository.save(user);
-        userService.register(user);
-
-        String text = "Здравствуйте!\n\n" +
-                "Ваш аккаунт в системе ресторана успешно создан.\n" +
-                "Логин: " + user.getUsername() + "\n" +
-                "Пароль: " + rawPassword;
-
-        String recipient = user.getUsername().trim();
-
-        if (recipient.contains("@")) {
-            emailService.sendEmail(recipient, "Успешная регистрация", text);
+        if (bindingResult.hasErrors()) {
+            return "admin/create-user";
         }
 
-        return "redirect:/admin/users";
+        try {
+            String rawPassword = user.getPassword();
+            user.setPassword(passwordEncoder.encode(rawPassword));
+
+            userService.register(user);
+
+            emailService.sendEmail(user.getEmail(), "Регистрация", "Логин: " + user.getUsername());
+
+            return "redirect:/admin/users";
+
+        } catch (RuntimeException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "admin/create-user";
+        }
     }
 
     @GetMapping("/edit/{id}")

@@ -20,7 +20,12 @@
 
   <div class="form-group">
     <label>Имя пользователя:</label>
-    <input type="email" th:field="*{username}" required />
+    <input type="username" th:field="*{username}" required />
+  </div>
+
+  <div class="form-group">
+    <label>Электронная почта:</label>
+    <input type="email" th:field="*{email}" required />
   </div>
 
   <div class="form-group">
