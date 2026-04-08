@@ -1,6 +1,6 @@
 package com.example.restaurant.controller;
 
-import com.example.restaurant.entity.User;
+import com.example.restaurant.dto.RegistrationDto;
 import com.example.restaurant.service.UserService;
 import com.example.restaurant.service.EmailService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,44 +15,38 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder encoder;
     private final EmailService emailService;
 
-    public AuthController(UserService userService, PasswordEncoder encoder, EmailService emailService) {
+    public AuthController(UserService userService, PasswordEncoder encoder, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userService = userService;
-        this.encoder = encoder;
         this.emailService = emailService;
     }
 
     @GetMapping("/register")
     public String registerPage(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("registrationDto", new RegistrationDto());
         return "register";
     }
 
     @PostMapping("/register")
-    public String register(@Valid User user, BindingResult result, Model model) {
+    public String register(@Valid RegistrationDto registrationDto, BindingResult result, Model model) {
+        userService.register(registrationDto);
         if (result.hasErrors()) {
             return "register";
         }
 
+        if (!registrationDto.getPassword().equals(registrationDto.getConfirmPassword())) {
+            model.addAttribute("errorMessage", "Пароли не совпадают!");
+            return "register";
+        }
+
         try {
-            String rawPassword = user.getPassword();
-            user.setPassword(encoder.encode(rawPassword));
-            user.setRole("USER");
+            userService.register(registrationDto);
 
-            userService.register(user);
-
-            String text = "Здравствуйте," + user.getUsername() + "!\n" +
-                    "Ваш аккаунт в системе ресторана успешно регистрирован.\n" +
-                    "Логин: " + user.getUsername() + "\n" +
-                    "Email: " + user.getEmail();
-
-            emailService.sendEmail(user.getEmail(), "Регистрация в системе", text);
-
+            emailService.sendEmail(registrationDto.getEmail(), "Регистрация", "Вы успешно зарегистрированы!");
             return "redirect:/login";
         } catch (RuntimeException e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("errorMessage", "Ошибка: " + e.getMessage());
             return "register";
         }
     }
