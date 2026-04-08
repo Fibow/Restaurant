@@ -30,7 +30,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@Valid RegistrationDto registrationDto, BindingResult result, Model model) {
-        userService.register(registrationDto);
         if (result.hasErrors()) {
             return "register";
         }
@@ -42,7 +41,6 @@ public class AuthController {
 
         try {
             userService.register(registrationDto);
-
             emailService.sendEmail(registrationDto.getEmail(), "Регистрация", "Вы успешно зарегистрированы!");
             return "redirect:/login";
         } catch (RuntimeException e) {

@@ -29,11 +29,8 @@ public class UserService {
     }
     @Transactional
     public void register(RegistrationDto dto) {
-        // Проверка уникальности (Лаб №11)
-        if (userRepository.existsByUsername(dto.getUsername())) {
+        if (userRepository.existsByUsername(dto.getUsername()))
             throw new RuntimeException("Пользователь с таким логином уже существует");
-        }
-
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("Email уже используется");
         }
@@ -41,9 +38,6 @@ public class UserService {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
-
-        // Шифрование пароля
-        String encodedPassword = passwordEncoder.encode(dto.getPassword());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRole("USER");
 
