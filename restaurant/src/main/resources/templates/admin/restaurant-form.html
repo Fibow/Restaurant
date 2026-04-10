@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый ресторан</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; background: #f4f4f9; }
+        .content { padding: 30px; max-width: 500px; margin: auto; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: #555; }
+        input { width: 100%; padding: 9px 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 1em; }
+        input:focus { border-color: #007bff; outline: none; }
+        .error { color: #e74c3c; font-size: 0.85em; margin-top: 4px; }
+        .btn { padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; font-size: 1em; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; }
+        .actions { display: flex; gap: 10px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<nav th:insert="~{fragments/navbar :: nav}"></nav>
+
+<div class="content">
+    <div class="card">
+        <h2>Новый ресторан</h2>
+
+        <form th:action="@{/admin/restaurants/new}" th:object="${restaurant}" method="post">
+            <div class="form-group">
+                <label>Название:</label>
+                <input type="text" th:field="*{name}" placeholder="Например: Кафе Астана" />
+                <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Адрес:</label>
+                <input type="text" th:field="*{address}" placeholder="Например: ул. Абая 10" />
+                <div class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <a th:href="@{/admin/restaurants}" class="btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

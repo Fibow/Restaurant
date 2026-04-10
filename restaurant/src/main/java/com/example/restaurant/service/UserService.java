@@ -7,6 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -42,5 +45,33 @@ public class UserService {
         user.setRole("USER");
 
         userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateUser(User updated, String rawNewPassword) {
+        User existing = userRepository.findById(updated.getId())
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+        existing.setUsername(updated.getUsername());
+        existing.setRole(updated.getRole());
+
+        if (rawNewPassword != null && !rawNewPassword.isEmpty()) {
+            existing.setPassword(passwordEncoder.encode(rawNewPassword));
+        }
+
+        userRepository.save(existing);
     }
 }

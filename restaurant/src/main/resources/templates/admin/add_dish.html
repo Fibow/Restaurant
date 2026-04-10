@@ -10,6 +10,8 @@
     </style>
 </head>
 <body>
+<nav th:insert="~{fragments/navbar :: nav}"></nav>  <!-- ← добавь эту строку -->
+
 <h2>Новое блюдо в меню</h2>
 
 <form th:action="@{/admin/dishes/add}" th:object="${MenuItemDto}" method="post">

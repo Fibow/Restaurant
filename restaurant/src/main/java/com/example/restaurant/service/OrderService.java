@@ -28,23 +28,23 @@ public class OrderService {
 
     @Transactional
     public void createSimpleOrder(Long menuItemId, String username) {
-        // 1. Ищем пользователя
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
-        // 2. Ищем блюдо
         MenuItem item = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new RuntimeException("Блюдо не найдено"));
 
-        // 3. Создаем заказ
         RestaurantOrder order = new RestaurantOrder();
         order.setUser(user);
-        order.setItems(List.of(item)); // Кладем выбранное блюдо в список
-        order.setTotalPrice(item.getPrice()); // Устанавливаем цену
         order.setStatus("НОВЫЙ");
+        order.setTotalPrice(item.getPrice());
 
-        // 4. Сохраняем
-        orderRepository.save(order);
+        // ✅ сначала сохраняем заказ — он получает ID
+        RestaurantOrder savedOrder = orderRepository.save(order);
+
+        // ✅ потом добавляем блюда через изменяемый список
+        savedOrder.getItems().add(item);
+        orderRepository.save(savedOrder);
     }
 
     public List<RestaurantOrder> getUserOrders(String username) {

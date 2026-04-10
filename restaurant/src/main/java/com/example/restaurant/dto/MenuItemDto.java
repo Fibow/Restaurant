@@ -12,8 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MenuItemDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "Название обязательно")

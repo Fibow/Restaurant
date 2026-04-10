@@ -5,6 +5,8 @@
     <title>Профиль</title>
 </head>
 <body>
+<nav th:insert="~{fragments/navbar :: nav}"></nav>  <!-- ← добавь эту строку -->
+
 <h1>Добро пожаловать, <span th:text="${username}">Гость</span>!</h1>
 
 <br>

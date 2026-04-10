@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "restaurant_orders")
 public class RestaurantOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +30,5 @@ public class RestaurantOrder {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
-    private List<MenuItem> items;
+    private List<MenuItem> items = new ArrayList<>(); // ← было просто List<MenuItem> items
 }

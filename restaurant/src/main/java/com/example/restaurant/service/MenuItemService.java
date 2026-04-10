@@ -29,6 +29,11 @@ public class MenuItemService {
         menuItemRepository.save(item);
     }
 
+    @Transactional
+    public void deleteMenuItem(Long id) {
+        menuItemRepository.deleteById(id);
+    }
+
     public List<MenuItem> getAllItems() {
         return menuItemRepository.findAll();
     }

@@ -4,6 +4,8 @@
     <title>Users List</title>
 </head>
 <body>
+<nav th:insert="~{fragments/navbar :: nav}"></nav>  <!-- ← добавь эту строку -->
+
 <h2>Users List</h2>
 <a th:href="@{/admin/create}">Create New User</a> <br><br>
 <a th:href="@{/home}">Home</a> <br><br>
