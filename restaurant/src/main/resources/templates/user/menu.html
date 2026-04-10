@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Меню ресторана</title>
+    <style>
+        .menu-container { display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; }
+        .dish-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; width: 200px; text-align: center; }
+        .price { font-weight: bold; color: green; }
+    </style>
+</head>
+<body>
+<h1>Наше Меню</h1>
+
+<div class="menu-container">
+    <div class="dish-card" th:each="dish : ${dishes}">
+        <h3 th:text="${dish.name}">Название блюда</h3>
+        <p th:text="${dish.description}">Описание блюда...</p>
+        <p class="price" th:text="${dish.price} + ' ₸'">Цена</p>
+
+        <form th:action="@{/order/add}" method="post">
+            <input type="hidden" name="dishId" th:value="${dish.id}" />
+            <button type="submit">Добавить в заказ</button>
+        </form>
+    </div>
+</div>
+
+<div th:if="${dishes.empty}">
+    <p>Меню пока пусто. Зайдите позже!</p>
+</div>
+</body>
+</html>

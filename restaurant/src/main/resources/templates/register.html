@@ -17,8 +17,10 @@
 <form th:action="@{/register}" th:object="${registrationDto}" method="post">
 
   <input type="text" th:field="*{username}" placeholder="Логин" required/>
+  <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
 
   <input type="email" th:field="*{email}" placeholder="Электронная почта" required/>
+  <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
 
   <input type="password" th:field="*{password}" placeholder="Пароль (минимум 6 символов)" required minlength="6"/>
   <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>

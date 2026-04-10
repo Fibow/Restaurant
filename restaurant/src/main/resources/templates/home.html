@@ -1,38 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Главная</title>
+    <title>Главная - Restaurant App</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; }
+        .container { padding: 20px; max-width: 800px; margin: 0 auto; text-align: center; }
+
+        /* Стили для карточек быстрых действий */
+        .actions { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
+        .card {
+            background: white; padding: 20px; border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 200px;
+            text-decoration: none; color: #333; transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); }
+
+        .btn-admin {
+            display: inline-block; padding: 10px 20px; margin-top: 20px;
+            background-color: #dc3545; color: white;
+            text-decoration: none; border-radius: 5px; font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<h1>Панель управления рестораном</h1>
 
-<a href="/profile">Мой профиль</a>
-<br><br>
-<style>
-    .btn-admin {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #dc3545;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-    }
+<nav th:insert="~{fragments/navbar :: nav}"></nav>
 
-    .btn-admin:hover {
-        background-color: #a71d2a;
-    }
-</style>
-<div sec:authorize="hasRole('ADMIN')" style="margin-top: 20px;">
-    <a th:href="@{/admin/users}" class="btn-admin">
-        Админ-панель
-    </a>
+<div class="container">
+    <h1>Добро пожаловать, <span sec:authentication="name">Пользователь</span>!</h1>
+    <p>Система управления рестораном готова к работе.</p>
+
+    <div class="actions" sec:authorize="hasRole('USER')">
+        <a th:href="@{/menu}" class="card">
+            <h3>🍴 Меню</h3>
+            <p>Посмотреть блюда и цены</p>
+        </a>
+        <a th:href="@{/orders/my}" class="card">
+            <h3>📋 Заказы</h3>
+            <p>История моих покупок</p>
+        </a>
+    </div>
+
+    <div sec:authorize="hasRole('ADMIN')" style="margin-top: 40px; border-top: 1px solid #ccc;">
+        <h3>Секция администратора</h3>
+        <a th:href="@{/admin/users}" class="btn-admin">Управление пользователями</a>
+        <a th:href="@{/admin/dishes/add}" class="btn-admin" style="background-color: #007bff;">Добавить блюдо</a>
+    </div>
 </div>
 
-<div sec:authorize="isAuthenticated()">
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Выйти</button>
-    </form>
-</div>
+</body>
+</html>

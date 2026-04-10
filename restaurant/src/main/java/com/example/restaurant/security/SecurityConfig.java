@@ -23,7 +23,7 @@ public class SecurityConfig {
                         // Доступ к статике и общим страницам
                         .requestMatchers("/css/**", "/js/**", "/register", "/login").permitAll()
 
-                        .requestMatchers("/register", "/login", "/css/**").permitAll()
+                        .requestMatchers("/register", "/login", "/menu", "/css/**").permitAll()
 
                         .anyRequest().authenticated()
                 )
