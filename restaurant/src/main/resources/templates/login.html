@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2>Вход в систему ресторана</h2>
-<form method="post" action="/login"> <input name="username" placeholder="Логин"/> <input name="password" type="password" placeholder="Пароль"/> <button>Войти</button> </form> <br>
+<form method="post" th:action="@{/login}"> <input name="username" placeholder="Логин"/> <input name="password" type="password" placeholder="Пароль"/> <button>Войти</button> </form> <br>
 <a href="/register">Нет аккаунта? Зарегистрироваться</a>
 </body>
 </html>

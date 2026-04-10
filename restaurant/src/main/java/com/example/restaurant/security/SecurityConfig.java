@@ -2,6 +2,7 @@ package com.example.restaurant.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,16 +16,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**") // REST API не нуждается в CSRF
+                )
                 .authorizeHttpRequests(auth -> auth
-                        // Доступ к админке только для роли ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // Доступ к статике и общим страницам
-                        .requestMatchers("/css/**", "/js/**", "/register", "/login").permitAll()
-
-                        .requestMatchers("/register", "/login", "/css/**").permitAll()
-
+                        .requestMatchers("/css/**", "/js/**", "/register", "/login", "/menu").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .requestMatchers("/api/**").hasRole("ADMIN") // POST/DELETE в API — только для ADMIN
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

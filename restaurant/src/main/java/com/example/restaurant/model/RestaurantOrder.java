@@ -1,35 +1,34 @@
 package com.example.restaurant.model;
 
+import com.example.restaurant.entity.User;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
+@Table(name = "restaurant_orders")
 public class RestaurantOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String status;
-    private Long restaurantId;
     private Double totalPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany
     @JoinTable(
-            name = "order_items", // Название промежуточной таблицы
-            joinColumns = @JoinColumn(name = "order_id"), // Колонка для ID заказа
-            inverseJoinColumns = @JoinColumn(name = "menu_item_id") // Колонка для ID блюда
+            name = "order_items",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
-    private List<MenuItem> items;
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public Long getRestaurantId() { return restaurantId; }
-    public void setRestaurantId(Long restaurantId) { this.restaurantId = restaurantId; }
-    public Double getTotalPrice() { return totalPrice; }
-    public void setTotalPrice(Double totalPrice) { this.totalPrice = totalPrice; }
-
-    public List<MenuItem> getItems() { return items; }
-    public void setItems(List<MenuItem> items) { this.items = items; }
+    private List<MenuItem> items = new ArrayList<>(); // ← было просто List<MenuItem> items
 }

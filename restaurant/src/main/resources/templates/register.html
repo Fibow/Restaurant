@@ -1,12 +1,36 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Регистрация</title>
+  <style>
+    .error { color: red; font-size: 0.9em; margin-bottom: 10px; }
+    .global-error { color: red; font-weight: bold; margin-bottom: 15px; }
+    input { display: block; margin-bottom: 5px; width: 250px; padding: 5px; }
+  </style>
 </head>
 <body>
 <h2>Регистрация в системе</h2>
-<form method="post" action="/register"> <input name="username" placeholder="Логин"/> <input name="password" type="password" placeholder="Пароль"/> <button>Регистрация</button> </form> <br>
-<a href="/login">Уже есть аккаунт? Войти</a>
+
+<div th:if="${errorMessage}" class="global-error" th:text="${errorMessage}"></div>
+
+<form th:action="@{/register}" th:object="${registrationDto}" method="post">
+
+  <input type="text" th:field="*{username}" placeholder="Логин" required/>
+  <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
+
+  <input type="email" th:field="*{email}" placeholder="Электронная почта" required/>
+  <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+
+  <input type="password" th:field="*{password}" placeholder="Пароль (минимум 6 символов)" required minlength="6"/>
+  <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
+
+  <input type="password" th:field="*{confirmPassword}" placeholder="Повторите пароль" required minlength="6"/>
+
+  <button type="submit" style="margin-top: 10px;">Зарегистрироваться</button>
+</form>
+
+<br>
+<a th:href="@{/login}">Уже есть аккаунт? Войти</a>
 </body>
 </html>
