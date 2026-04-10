@@ -14,19 +14,19 @@ public class RestaurantOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String status;
+    private Double totalPrice;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private String status;
-    private Long restaurantId;
-    private Double totalPrice;
 
     @ManyToMany
     @JoinTable(
-            name = "order_items", // Название промежуточной таблицы
-            joinColumns = @JoinColumn(name = "order_id"), // Колонка для ID заказа
-            inverseJoinColumns = @JoinColumn(name = "menu_item_id") // Колонка для ID блюда
+            name = "order_items",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
     private List<MenuItem> items;
-
 }

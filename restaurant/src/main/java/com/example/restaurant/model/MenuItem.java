@@ -18,8 +18,11 @@ public class MenuItem {
     @NotBlank(message = "Название блюда не может быть пустым")
     private String name;
 
+    private String description;
+
     @NotNull(message = "Цена должна быть указана")
     @Positive(message = "Цена должна быть больше нуля")
     private Double price;
 
+    private String category;
 }

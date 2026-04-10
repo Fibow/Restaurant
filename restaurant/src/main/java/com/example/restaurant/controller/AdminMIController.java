@@ -1,7 +1,7 @@
 package com.example.restaurant.controller;
 
-import com.example.restaurant.dto.DishDto;
-import com.example.restaurant.service.DishService;
+import com.example.restaurant.dto.MenuItemDto;
+import com.example.restaurant.service.MenuItemService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,28 +11,30 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin/dishes")
-public class AdminDishController {
+public class AdminMIController {
 
-    private final DishService dishService;
+    private final MenuItemService menuItemService;
 
-    public AdminDishController(DishService dishService) {
-        this.dishService = dishService;
+    public AdminMIController(MenuItemService menuItemService) {
+        this.menuItemService = menuItemService;
     }
 
     @GetMapping("/add")
     public String showAddDishForm(Model model) {
-        model.addAttribute("dishDto", new DishDto()); // Пустой объект для формы
+        model.addAttribute("MenuItemDto", new MenuItemDto());
         return "admin/add_dish";
     }
 
     @PostMapping("/add")
-    public String addDish(@Valid @ModelAttribute("dishDto") DishDto dishDto, BindingResult result, Model model) {
+    public String addDish(@Valid @ModelAttribute("MenuItemDto") MenuItemDto menuItemDto, BindingResult result, Model model, Principal principal) {
         if (result.hasErrors()) {
             return "admin/add_dish";
         }
-        dishService.saveDish(dishDto);
+        menuItemService.saveMenuItem(menuItemDto);
         return "redirect:/menu"; // Или на страницу со списком блюд
     }
 }

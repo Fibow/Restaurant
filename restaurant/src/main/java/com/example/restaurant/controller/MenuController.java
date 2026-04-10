@@ -15,7 +15,7 @@ public class MenuController {
 
     @GetMapping("/menu")
     public String showMenu(Model model) {
-        model.addAttribute("dishes", menuItemRepository.findAll());
+        model.addAttribute("MenuItem", menuItemRepository.findAll());
         return "/user/menu";
     }
 }

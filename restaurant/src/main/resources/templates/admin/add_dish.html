@@ -12,7 +12,7 @@
 <body>
 <h2>Новое блюдо в меню</h2>
 
-<form th:action="@{/admin/dishes/add}" th:object="${dishDto}" method="post">
+<form th:action="@{/admin/dishes/add}" th:object="${MenuItemDto}" method="post">
     <div class="form-group">
         <label>Название:</label>
         <input type="text" th:field="*{name}" />
@@ -21,7 +21,9 @@
 
     <div class="form-group">
         <label>Описание:</label>
-        <textarea th:field="*{description}"></textarea>
+        <label>
+            <textarea th:field="*{description}"></textarea>
+        </label>
     </div>
 
     <div class="form-group">

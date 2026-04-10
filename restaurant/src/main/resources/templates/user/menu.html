@@ -18,14 +18,14 @@
         <p th:text="${dish.description}">Описание блюда...</p>
         <p class="price" th:text="${dish.price} + ' ₸'">Цена</p>
 
-        <form th:action="@{/order/add}" method="post">
-            <input type="hidden" name="dishId" th:value="${dish.id}" />
-            <button type="submit">Добавить в заказ</button>
+        <form th:action="@{/orders/add}" method="post">
+            <input type="hidden" name="itemId" th:value="${dish.id}" />
+            <button type="submit">Заказать</button>
         </form>
     </div>
 </div>
 
-<div th:if="${dishes.empty}">
+<div>
     <p>Меню пока пусто. Зайдите позже!</p>
 </div>
 </body>
