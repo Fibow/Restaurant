@@ -9,6 +9,7 @@
         <a th:href="@{/admin/users}" style="color:#ffc107; text-decoration:none;">👥 Пользователи</a>
         <a th:href="@{/admin/restaurants}" style="color:#ffc107; text-decoration:none;">🏠 Рестораны</a>
         <a th:href="@{/admin/dishes/add}" style="color:#ffc107; text-decoration:none;">🍽️ Добавить блюдо</a>
+        <a th:href="@{/admin/orders}" style="color:#ffc107; text-decoration:none;">📋 Заказы</a>
     </div>
 
     <div sec:authorize="hasRole('USER')" style="display:flex; gap:15px;">

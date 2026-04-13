@@ -2,35 +2,110 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Регистрация</title>
+  <title>Регистрация — Restaurant</title>
   <style>
-    .error { color: red; font-size: 0.9em; margin-bottom: 10px; }
-    .global-error { color: red; font-weight: bold; margin-bottom: 15px; }
-    input { display: block; margin-bottom: 5px; width: 250px; padding: 5px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: sans-serif;
+      min-height: 100vh;
+      background: #f4f4f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    .icon-wrap {
+      width: 52px; height: 52px;
+      background: #e8f8f0;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      margin: 0 auto 16px;
+    }
+    .card-title {
+      font-size: 20px; font-weight: 500;
+      text-align: center; color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .card-subtitle {
+      font-size: 13px; color: #888;
+      text-align: center; margin-bottom: 24px;
+    }
+    .form-group { margin-bottom: 14px; }
+    label { font-size: 13px; color: #555; display: block; margin-bottom: 5px; }
+    input[type="text"], input[type="password"], input[type="email"] {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid #ddd; border-radius: 8px;
+      font-size: 14px; color: #1a1a1a;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    input:focus { border-color: #34c77b; }
+    .btn {
+      width: 100%; padding: 11px;
+      border-radius: 8px; border: none;
+      font-size: 15px; font-weight: 500;
+      cursor: pointer; margin-top: 6px;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn-success { background: #34c77b; color: white; }
+    .footer-link {
+      text-align: center; margin-top: 18px;
+      font-size: 13px; color: #888;
+    }
+    .footer-link a { color: #4f8ef7; text-decoration: none; }
+    .error { font-size: 12px; color: #c0392b; margin-top: 4px; }
+    .error-box {
+      background: #fff0f0; border: 1px solid #ffc9c9;
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; color: #c0392b;
+      margin-bottom: 14px;
+    }
   </style>
 </head>
 <body>
-<h2>Регистрация в системе</h2>
+<div class="card">
+  <div class="icon-wrap">✨</div>
+  <p class="card-title">Создать аккаунт</p>
+  <p class="card-subtitle">Регистрация займёт минуту</p>
 
-<div th:if="${errorMessage}" class="global-error" th:text="${errorMessage}"></div>
+  <div th:if="${errorMessage}" class="error-box" th:text="${errorMessage}"></div>
 
-<form th:action="@{/register}" th:object="${registrationDto}" method="post">
+  <form th:action="@{/register}" th:object="${registrationDto}" method="post">
+    <div class="form-group">
+      <label>Логин</label>
+      <input type="text" th:field="*{username}" placeholder="Минимум 3 символа" required />
+      <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" th:field="*{email}" placeholder="example@mail.com" required />
+      <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label>Пароль</label>
+      <input type="password" th:field="*{password}" placeholder="Минимум 6 символов" required />
+      <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label>Подтвердите пароль</label>
+      <input type="password" th:field="*{confirmPassword}" placeholder="Повторите пароль" required />
+    </div>
+    <button type="submit" class="btn btn-success">Зарегистрироваться</button>
+  </form>
 
-  <input type="text" th:field="*{username}" placeholder="Логин" required/>
-  <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
-
-  <input type="email" th:field="*{email}" placeholder="Электронная почта" required/>
-  <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
-
-  <input type="password" th:field="*{password}" placeholder="Пароль (минимум 6 символов)" required minlength="6"/>
-  <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
-
-  <input type="password" th:field="*{confirmPassword}" placeholder="Повторите пароль" required minlength="6"/>
-
-  <button type="submit" style="margin-top: 10px;">Зарегистрироваться</button>
-</form>
-
-<br>
-<a th:href="@{/login}">Уже есть аккаунт? Войти</a>
+  <p class="footer-link">
+    Уже есть аккаунт? <a th:href="@{/login}">Войти</a>
+  </p>
+</div>
 </body>
 </html>

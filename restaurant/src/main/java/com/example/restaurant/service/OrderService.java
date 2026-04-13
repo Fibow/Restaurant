@@ -39,12 +39,22 @@ public class OrderService {
         order.setStatus("НОВЫЙ");
         order.setTotalPrice(item.getPrice());
 
-        // ✅ сначала сохраняем заказ — он получает ID
         RestaurantOrder savedOrder = orderRepository.save(order);
 
-        // ✅ потом добавляем блюда через изменяемый список
         savedOrder.getItems().add(item);
         orderRepository.save(savedOrder);
+    }
+
+    @Transactional
+    public void updateStatus(Long orderId, String status) {
+        RestaurantOrder order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Заказ не найден"));
+        order.setStatus(status);
+        orderRepository.save(order);
+    }
+
+    public List<RestaurantOrder> getAllOrders() {
+        return orderRepository.findAll();
     }
 
     public List<RestaurantOrder> getUserOrders(String username) {
