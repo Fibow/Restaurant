@@ -37,7 +37,15 @@
                 </ul>
             </td>
             <td th:text="${order.totalPrice} + ' ₸'"></td>
-            <td th:text="${order.status}"></td>
+            <td>
+    <span style="display:inline-block; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:500;"
+          th:style="${order.status == 'НОВЫЙ'}    ? 'background:#fff3cd;color:#856404' :
+                    (${order.status == 'В РАБОТЕ'} ? 'background:#cce5ff;color:#004085' :
+                    (${order.status == 'ГОТОВ'}    ? 'background:#d4edda;color:#155724' :
+                                                     'background:#e2e3e5;color:#383d41'))"
+          th:text="${order.status}">
+    </span>
+            </td>
         </tr>
         </tbody>
     </table>
