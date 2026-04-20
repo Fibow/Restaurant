@@ -3,15 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <title>Профиль</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; background: #f4f4f9; }
+        .content { padding: 30px; max-width: 800px; margin: auto; }
+        .profile-card {
+            background: white; border-radius: 12px;
+            padding: 28px; margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex; align-items: center; gap: 24px;
+        }
+        .avatar {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: #cce5ff; color: #004085;
+            font-size: 28px; font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .profile-info h2 { margin: 0 0 4px; font-size: 22px; }
+        .profile-info p  { margin: 0; color: #666; font-size: 14px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card {
+            background: white; border-radius: 10px;
+            padding: 20px; text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .stat-card .value { font-size: 28px; font-weight: 600; color: #333; }
+        .stat-card .label { font-size: 13px; color: #888; margin-top: 4px; }
+        h3 { margin: 0 0 14px; color: #333; }
+        table { width: 100%; border-collapse: collapse; background: white;
+            border-radius: 10px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #343a40; color: white; }
+        tr:last-child td { border-bottom: none; }
+        .badge {
+            display: inline-block; padding: 3px 10px;
+            border-radius: 12px; font-size: 12px; font-weight: 500;
+        }
+        .badge-new      { background: #fff3cd; color: #856404; }
+        .badge-progress { background: #cce5ff; color: #004085; }
+        .badge-ready    { background: #d4edda; color: #155724; }
+        .badge-done     { background: #e2e3e5; color: #383d41; }
+    </style>
 </head>
 <body>
-<nav th:insert="~{fragments/navbar :: nav}"></nav>  <!-- ← добавь эту строку -->
 
-<h1>Добро пожаловать, <span th:text="${username}">Гость</span>!</h1>
+<nav th:insert="~{fragments/navbar :: nav}"></nav>
 
-<br>
-<a href="/home">Вернуться на главную</a>
-<br><br>
-<a href="/logout">Выйти из системы</a>
+<div class="content">
+
+    <!-- Карточка пользователя -->
+    <div class="profile-card">
+        <div class="avatar"
+             th:text="${#strings.toUpperCase(#strings.substring(user.username, 0, 1))}">
+        </div>
+        <div class="profile-info">
+            <h2 th:text="${user.username}">Пользователь</h2>
+            <p th:text="${user.email}">email@mail.com</p>
+            <p style="margin-top:6px;">
+                <span style="background:#e8f0fe; color:#1a73e8; padding:3px 10px;
+                             border-radius:12px; font-size:12px;"
+                      th:text="${user.role}">USER</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Статистика -->
+    <div class="stats">
+        <div class="stat-card">
+            <div class="value" th:text="${totalOrders}">0</div>
+            <div class="label">Всего заказов</div>
+        </div>
+        <div class="stat-card">
+            <div class="value" th:text="${#numbers.formatDecimal(totalSpent, 0, 'COMMA', 0, 'POINT')} + ' ₸'">0 ₸</div>
+            <div class="label">Потрачено</div>
+        </div>
+    </div>
+
+    <!-- История заказов -->
+    <h3>История заказов</h3>
+    <table th:if="${!orders.empty}">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Блюда</th>
+            <th>Сумма</th>
+            <th>Время</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td>
+                    <span th:each="item, i : ${order.items}">
+                        <span th:text="${item.name}"></span>
+                        <span th:if="!${i.last}">, </span>
+                    </span>
+            </td>
+            <td th:text="${order.totalPrice} + ' ₸'"></td>
+            <td th:text="${order.createdAt != null ?
+                    #temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm') : '—'}"></td>
+            <td>
+                    <span class="badge"
+                          th:classappend="${order.status == 'НОВЫЙ'}    ? 'badge-new' :
+                                         (${order.status == 'В РАБОТЕ'} ? 'badge-progress' :
+                                         (${order.status == 'ГОТОВ'}    ? 'badge-ready' : 'badge-done'))"
+                          th:text="${order.status}">
+                    </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${orders.empty}" style="color:gray; margin-top:10px;">
+        <p>Вы ещё ничего не заказывали. <a th:href="@{/menu}">Перейти в меню</a></p>
+    </div>
+
+</div>
 </body>
 </html>

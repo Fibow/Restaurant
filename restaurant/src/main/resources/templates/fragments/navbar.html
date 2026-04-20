@@ -4,6 +4,7 @@
      style="background:#333; padding:10px 20px; display:flex; gap:20px; align-items:center;">
 
     <a th:href="@{/home}" style="color:white; text-decoration:none;">🏠 Главная</a>
+    <a th:href="@{/profile}" style="color:white; text-decoration:none;">👤 Профиль</a>
 
     <div sec:authorize="hasRole('ADMIN')" style="display:flex; gap:15px;">
         <a th:href="@{/admin/users}" style="color:#ffc107; text-decoration:none;">👥 Пользователи</a>

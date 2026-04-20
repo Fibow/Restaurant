@@ -37,6 +37,9 @@
                 </ul>
             </td>
             <td th:text="${order.totalPrice} + ' ₸'"></td>
+            <td th:text="${order.createdAt != null ?
+            #temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm') : '—'}">
+            </td>
             <td>
     <span style="display:inline-block; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:500;"
           th:style="${order.status == 'НОВЫЙ'}    ? 'background:#fff3cd;color:#856404' :

@@ -33,6 +33,22 @@ public class MenuItemService {
         menuItemRepository.save(item);
     }
 
+    public MenuItem getById(Long id) {
+        return menuItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Блюдо не найдено"));
+    }
+
+    @Transactional
+    public void updateMenuItem(Long id, MenuItemDto dto) {
+        MenuItem item = menuItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Блюдо не найдено"));
+        item.setName(dto.getName());
+        item.setDescription(dto.getDescription());
+        item.setPrice(dto.getPrice());
+        item.setCategory(dto.getCategory());
+        menuItemRepository.save(item);
+    }
+
     @Transactional
     public void deleteMenuItem(Long id) {
         MenuItem item = menuItemRepository.findById(id)
