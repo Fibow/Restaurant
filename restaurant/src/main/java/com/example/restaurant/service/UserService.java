@@ -47,6 +47,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void checkUnique(RegistrationDto dto) {
+        if (userRepository.existsByUsername(dto.getUsername()))
+            throw new RuntimeException("Пользователь с таким логином уже существует");
+        if (userRepository.existsByEmail(dto.getEmail()))
+            throw new RuntimeException("Email уже используется");
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

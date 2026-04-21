@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение email</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <style>
+        .code-input {
+            font-size: 28px;
+            letter-spacing: 12px;
+            text-align: center;
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .code-input:focus { border-color: #4f8ef7; outline: none; }
+    </style>
+</head>
+<body class="auth-page">
+<div class="auth-card">
+    <div class="auth-icon auth-icon-blue">✉️</div>
+    <p class="auth-title">Подтвердите email</p>
+    <p class="auth-subtitle">
+        Мы отправили 6-значный код на
+        <strong th:text="${email}">email</strong>
+    </p>
+
+    <div th:if="${errorMessage}"   class="alert alert-error"   th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+    <form th:action="@{/verify-email}" method="post">
+        <div class="form-group">
+            <label>Код подтверждения</label>
+            <input type="text"
+                   name="code"
+                   class="code-input"
+                   placeholder="000000"
+                   maxlength="6"
+                   autocomplete="one-time-code"
+                   autofocus
+                   required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px;">
+            Подтвердить
+        </button>
+    </form>
+
+    <form th:action="@{/resend-code}" method="post" style="margin-top:16px;">
+        <button type="submit"
+                class="btn btn-full"
+                style="background:#f4f4f9; color:#555; border:1px solid #ddd;">
+            Отправить код повторно
+        </button>
+    </form>
+
+    <p class="auth-footer" style="margin-top:16px;">
+        <a th:href="@{/register}">← Вернуться к регистрации</a>
+    </p>
+</div>
+</body>
+</html>
