@@ -9,6 +9,7 @@ import com.example.restaurant.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,6 +39,7 @@ public class OrderService {
         order.setUser(user);
         order.setStatus("НОВЫЙ");
         order.setTotalPrice(item.getPrice());
+        order.setCreatedAt(LocalDateTime.now()); // ← добавь эту строку
 
         RestaurantOrder savedOrder = orderRepository.save(order);
 

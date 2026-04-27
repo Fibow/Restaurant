@@ -17,13 +17,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/**") // REST API не нуждается в CSRF
+                        .ignoringRequestMatchers("/api/**")
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/css/**", "/js/**", "/register", "/login", "/menu").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/register", "/login", "/menu",
+                                "/verify-email", "/resend-code").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                        .requestMatchers("/api/**").hasRole("ADMIN") // POST/DELETE в API — только для ADMIN
+                        .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
